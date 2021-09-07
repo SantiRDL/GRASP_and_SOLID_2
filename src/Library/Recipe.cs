@@ -5,6 +5,7 @@
 //-------------------------------------------------------------------------
 
 using System;
+using System.Text;
 using System.Collections;
 
 namespace Full_GRASP_And_SOLID.Library
@@ -24,15 +25,22 @@ namespace Full_GRASP_And_SOLID.Library
         {
             this.steps.Remove(step);
         }
-
-        public void PrintRecipe()
+        /// <summary>
+        /// Se añade la responsabilidad de anidar los string StepString, formando asi la receta.
+        /// Se encarga únicamente de crear el string y no de imprimirlo porque sino, la clase podría tener mas de una
+        /// razón de cambio.
+        /// Además, decidimos crear el string en esta clase porque es la única que conoce todos los pasos.
+        /// </summary>
+        /// <returns>String para luego ser utilizado por ConsolePrinter.</returns>
+        public string GetStringRecipe()
         {
-            Console.WriteLine($"Receta de {this.FinalProduct.Description}:");
+            StringBuilder Receta = new StringBuilder();
+            Receta.Append($"Receta de {this.FinalProduct.Description} \n");
             foreach (Step step in this.steps)
             {
-                Console.WriteLine($"{step.Quantity} de '{step.Input.Description}' " +
-                    $"usando '{step.Equipment.Description}' durante {step.Time}");
+                Receta.Append(step.StepString);
             }
+            return Receta.ToString();
         }
     }
 }
